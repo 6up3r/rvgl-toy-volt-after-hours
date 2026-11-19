@@ -1,0 +1,28 @@
+# Writes the Re-Volt World downloads badge (badges/rvw.json on the badges branch) once a day.
+name: Re-Volt World downloads badge
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the count and publish it to the badges branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          count=$(curl -fsSL -A 'Mozilla/5.0' https://www.revoltworld.net/dl/toy-volt-after-hours/ | grep -oP 'themesdna-dlcnt">\K[0-9]+' | head -n 1) || count=''
+          # until the page is approved it answers 404: the badge says so instead of breaking
+          if [ -n "$count" ]; then message="$count downloads"; else message='coming soon'; fi
+          echo "Re-Volt World downloads: $message"
+          mkdir badges && cd badges
+          printf '{"schemaVersion": 1, "label": "Re-Volt World", "message": "%s", "color": "6f42c1"}\n' "$message" > rvw.json
+          git init -q -b badges
+          git add rvw.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -q -m "Re-Volt World downloads: $message"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" badges

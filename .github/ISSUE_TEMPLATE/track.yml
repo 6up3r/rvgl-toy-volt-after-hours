@@ -1,0 +1,76 @@
+name: Track report
+description: A problem with Toy-Volt After Hours, as RVGL draws it, plays it or drives it.
+title: "[1.0] Short description of the problem"
+labels: ["track report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One report per problem. The author reads every report; one labelled `accepted` is checked in the game and fixed in a later release.
+  - type: input
+    id: version
+    attributes:
+      label: "Track version"
+      description: The version in the readme of levels/tv_afterhours, or the release you downloaded.
+      placeholder: "1.0"
+    validations:
+      required: true
+  - type: input
+    id: rvgl
+    attributes:
+      label: "RVGL version"
+      description: The RVGL build you play on.
+      placeholder: "23.1030a1"
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: "Where you raced"
+      multiple: true
+      options:
+        - "Normal direction"
+        - "Reverse"
+        - "Single race or championship"
+        - "Time Trial"
+        - "Practice"
+        - "Multiplayer"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Category"
+      description: What the problem is about.
+      options:
+        - "Graphics: textures, lights, holes, flicker"
+        - "Collision: a car stuck, falling through or bouncing"
+        - "CPU cars"
+        - "Direction arrows, track zones, wrong-way flag"
+        - "Frame rate"
+        - "Sound"
+        - "Other"
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: "Where on the lap"
+      description: The room or the stretch of the lap, as precise as you can.
+      placeholder: "The paint line, on the plank across the tanks"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "What is wrong"
+      description: What you see, hear or feel while driving; what you expected instead; how to make it happen again.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "Screenshots or video"
+      description: Drop them here; mark the spot if it is small.
+    validations:
+      required: false
